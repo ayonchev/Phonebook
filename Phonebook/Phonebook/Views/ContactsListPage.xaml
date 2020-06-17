@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Phonebook.Views.ContactsListPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Clicked="AddItemClicked" />
+    </ContentPage.ToolbarItems>
+    
+    <StackLayout>
+        <SearchBar TextChanged="SearchBarTextChanged" />
+        <ListView 
+        x:Name="contactsList" 
+        ItemsSource="{Binding Contacts}" 
+        VerticalOptions="FillAndExpand" 
+        HasUnevenRows="True"
+        ItemSelected="contactsList_ItemSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout>
+                            <!--image -->
+                            <Label Text="{Binding Name}" FontSize="Large" />
+                            <Label Text="{Binding PhoneNumber}" FontSize="Small" />
+                            <!--contact name /> -->
+                        </StackLayout>
+                        <ViewCell.ContextActions>
+                            <MenuItem Text="Edit" Clicked="EditButtonClicked" CommandParameter="{Binding .}" />
+
+                            <MenuItem Text="Delete" Clicked="DeleteButtonClicked" IsDestructive="True" CommandParameter="{Binding .}" />
+                        </ViewCell.ContextActions>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+    
+</ContentPage>
