@@ -19,9 +19,6 @@ namespace Phonebook.Views
             InitializeComponent();
 
             BindingContext = this.Contact = contact;
-
-
-            DisplayAlert("Contact", $"{contact.Name} - {contact.PhoneNumber}", "OK");
         }
     }
 }

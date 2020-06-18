@@ -7,16 +7,18 @@
              x:Class="Phonebook.Views.ContactCreateEditPage">
      
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Cancel" Clicked="CancelButtonClicked" />
-        <ToolbarItem Text="Save" Clicked="SaveButtonClicked" />
+        <ToolbarItem Text="Cancel" IconImageSource="close.png" Clicked="CancelButtonClicked" />
+        <ToolbarItem Text="Save" IconImageSource="check.png" Clicked="SaveButtonClicked" />
     </ContentPage.ToolbarItems>
     
     <StackLayout>
         <Label Text="Name" />
-        <Entry Text="{Binding Name, Mode=TwoWay}" />
+        <Entry Text="{Binding Contact.Name, Mode=TwoWay}" />
         <Label Text="Phone number" />
-        <Entry Text="{Binding PhoneNumber, Mode=TwoWay}" />
+        <Entry Text="{Binding Contact.PhoneNumber, Mode=TwoWay}" />
         <Label Text="Description" />
-        <Editor Text="{Binding Description, Mode=TwoWay}" AutoSize="TextChanges" />
+        <Editor Text="{Binding Contact.Description, Mode=TwoWay}" AutoSize="TextChanges" />
+        <Label Text="Category" />
+        <Picker Title="Choose a category" ItemsSource="{Binding Categories}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedCategory, Mode=TwoWay}" />
     </StackLayout>
 </ContentPage>

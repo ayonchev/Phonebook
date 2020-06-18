@@ -14,7 +14,7 @@ namespace Phonebook.Data
 
         public SQLiteAsyncConnection Connection => connection;
 
-        public async static void Initialize(Type[] types)
+        public async static Task Initialize(Type[] types)
         {
             if (!initialized)
             {
@@ -29,7 +29,7 @@ namespace Phonebook.Data
             }
         }
 
-        public static async void Seed<T>(IEnumerable<T> items, int minimumCount) 
+        public static async Task Seed<T>(IEnumerable<T> items, int minimumCount) 
             where T : BaseEntity, new()
         {
             int currentCount = await connection.Table<T>().CountAsync();

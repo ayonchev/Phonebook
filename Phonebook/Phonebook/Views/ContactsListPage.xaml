@@ -6,17 +6,17 @@
              mc:Ignorable="d"
              x:Class="Phonebook.Views.ContactsListPage">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Clicked="AddItemClicked" />
+        <ToolbarItem Text="Add" IconImageSource="person_add.png" Clicked="AddItemClicked" />
     </ContentPage.ToolbarItems>
-    
+
     <StackLayout>
         <SearchBar TextChanged="SearchBarTextChanged" />
         <ListView 
-        x:Name="contactsList" 
-        ItemsSource="{Binding Contacts}" 
-        VerticalOptions="FillAndExpand" 
-        HasUnevenRows="True"
-        ItemSelected="contactsList_ItemSelected">
+            x:Name="contactsList" 
+            ItemsSource="{Binding Contacts}" 
+            VerticalOptions="FillAndExpand" 
+            HasUnevenRows="True"
+            ItemSelected="contactsList_ItemSelected">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -27,14 +27,14 @@
                             <!--contact name /> -->
                         </StackLayout>
                         <ViewCell.ContextActions>
-                            <MenuItem Text="Edit" Clicked="EditButtonClicked" CommandParameter="{Binding .}" />
+                            <MenuItem Text="Edit" Clicked="EditButtonClicked" IconImageSource="edit.png" CommandParameter="{Binding .}" />
 
-                            <MenuItem Text="Delete" Clicked="DeleteButtonClicked" IsDestructive="True" CommandParameter="{Binding .}" />
+                            <MenuItem Clicked="DeleteButtonClicked" IsDestructive="True" IconImageSource="delete.png" CommandParameter="{Binding .}" />
                         </ViewCell.ContextActions>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
     </StackLayout>
-    
+
 </ContentPage>
