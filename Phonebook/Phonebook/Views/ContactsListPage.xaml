@@ -3,10 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:Phonebook.Extensions;assembly=Phonebook"
              mc:Ignorable="d"
              x:Class="Phonebook.Views.ContactsListPage">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" IconImageSource="person_add.png" Clicked="AddItemClicked" />
+        <ToolbarItem 
+            Text="Add" 
+            IconImageSource="person_add.png" 
+            Clicked="AddItemClicked" />
     </ContentPage.ToolbarItems>
 
     <StackLayout>
@@ -20,16 +24,31 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout>
-                            <!--image -->
-                            <Label Text="{Binding Name}" FontSize="Large" />
-                            <Label Text="{Binding PhoneNumber}" FontSize="Small" />
-                            <!--contact name /> -->
+                        <StackLayout 
+                            Margin="0, 10"
+                            Padding="15, 0" 
+                            Orientation="Horizontal"
+                            VerticalOptions="Center">
+                            <Image 
+                                Source="{local:ImageResource Phonebook.Assets.Images.user-profile.png}"
+                                WidthRequest="50"
+                                Aspect="AspectFit" />
+                            <Label 
+                                Text="{Binding Name}" 
+                                FontSize="Large" 
+                                VerticalTextAlignment="Center" />
                         </StackLayout>
                         <ViewCell.ContextActions>
-                            <MenuItem Text="Edit" Clicked="EditButtonClicked" IconImageSource="edit.png" CommandParameter="{Binding .}" />
+                            <MenuItem 
+                                Text="Edit" 
+                                Clicked="EditButtonClicked" 
+                                IconImageSource="edit.png" CommandParameter="{Binding .}" />
 
-                            <MenuItem Clicked="DeleteButtonClicked" IsDestructive="True" IconImageSource="delete.png" CommandParameter="{Binding .}" />
+                            <MenuItem 
+                                Clicked="DeleteButtonClicked" 
+                                IsDestructive="True" 
+                                IconImageSource="delete.png" 
+                                CommandParameter="{Binding .}" />
                         </ViewCell.ContextActions>
                     </ViewCell>
                 </DataTemplate>

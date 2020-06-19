@@ -5,9 +5,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Phonebook.Views.ContactDetailsPage">
-    <StackLayout Padding="20">
+    <StackLayout>
         <Image />
-        <StackLayout Orientation="Horizontal">
+        <StackLayout Orientation="Horizontal"  Padding="30" VerticalOptions="CenterAndExpand">
             <Label HorizontalOptions="Start" Text="{Binding Name}" FontSize="Large" />
             <Label HorizontalOptions="End" Text="{Binding PhoneNumber}" />
         </StackLayout>

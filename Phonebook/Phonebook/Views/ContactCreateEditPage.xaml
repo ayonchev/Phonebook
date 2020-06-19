@@ -4,14 +4,15 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="Phonebook.Views.ContactCreateEditPage">
+             x:Class="Phonebook.Views.ContactCreateEditPage"
+             Padding="30">
      
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Cancel" IconImageSource="close.png" Clicked="CancelButtonClicked" />
         <ToolbarItem Text="Save" IconImageSource="check.png" Clicked="SaveButtonClicked" />
     </ContentPage.ToolbarItems>
     
-    <StackLayout>
+    <StackLayout VerticalOptions="CenterAndExpand">
         <Label Text="Name" />
         <Entry Text="{Binding Contact.Name, Mode=TwoWay}" />
         <Label Text="Phone number" />
