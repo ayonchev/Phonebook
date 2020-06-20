@@ -5,13 +5,38 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Phonebook.Views.ContactDetailsPage">
-    <StackLayout Padding="20" HorizontalOptions="Center">
-        <Image Source="{Binding Picture}" HeightRequest="100" />
-        <StackLayout HorizontalOptions="Center">
-            <Label Text="{Binding Name}" FontSize="Title" />
-            <Label Text="{Binding PhoneNumber}" FontSize="Medium" />
+    <Grid Padding="20" ColumnSpacing="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="120" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Frame 
+            CornerRadius="100"
+            HeightRequest="60"
+            WidthRequest="60"
+            IsClippedToBounds="True"
+            HorizontalOptions="Center"
+            VerticalOptions="Center">
+            <Image 
+                Source="{Binding Picture}" 
+                Margin="-20"
+                WidthRequest="100" 
+                HeightRequest="100" 
+                Aspect="AspectFill" />
+        </Frame>
+        <StackLayout Grid.Column="1" VerticalOptions="Center">
+            <Label Text="{Binding Name}" FontSize="Large" />
+            <Label Text="{Binding PhoneNumber}" FontSize="Large" />
+        </StackLayout>
+        <StackLayout Grid.Row="1" Grid.ColumnSpan="2">
+            <Label Text="Description" FontSize="Title" />
             <Label Text="{Binding Description}" FontSize="Medium" />
+            <Label Text="Category" FontSize="Title" />
             <Label Text="{Binding Category.Name}" FontSize="Medium" />
         </StackLayout>
-    </StackLayout>
+    </Grid>
 </ContentPage>
