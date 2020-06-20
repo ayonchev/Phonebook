@@ -17,7 +17,6 @@ namespace Phonebook
         public App()
         {
             InitializeComponent();
-
             MainPage = new NavigationPage(new ContactsListPage());
         }
 

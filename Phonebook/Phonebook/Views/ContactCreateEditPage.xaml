@@ -8,13 +8,13 @@
              Padding="30">
      
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Cancel" IconImageSource="close.png" Clicked="CancelButtonClicked" />
-        <ToolbarItem Text="Save" IconImageSource="check.png" Clicked="SaveButtonClicked" />
+        <ToolbarItem Text="Cancel" Command="{Binding CancelCommand}" IconImageSource="close.png" />
+        <ToolbarItem Text="Save" Command="{Binding SaveCommand}" IconImageSource="check.png" />
     </ContentPage.ToolbarItems>
     
     <StackLayout VerticalOptions="CenterAndExpand">
-        <Button Text="Choose a picture" Clicked="PictureBtn_Clicked" />
-        <Image x:Name="selectedImage" />
+        <!--<Button Text="Choose a picture" Command="" />
+        <Image x:Name="selectedImage" />-->
         <Label Text="Name" />
         <Entry Text="{Binding Contact.Name, Mode=TwoWay}" />
         <Label Text="Phone number" />

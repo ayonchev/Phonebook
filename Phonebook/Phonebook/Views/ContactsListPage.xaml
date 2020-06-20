@@ -10,13 +10,12 @@
         <ToolbarItem 
             Text="Add" 
             IconImageSource="person_add.png" 
-            Clicked="AddItemClicked" />
+            Command="{Binding AddCommand}" />
     </ContentPage.ToolbarItems>
 
     <StackLayout>
         <SearchBar TextChanged="SearchBarTextChanged" />
         <ListView 
-            x:Name="contactsList" 
             ItemsSource="{Binding Contacts}" 
             VerticalOptions="FillAndExpand" 
             HasUnevenRows="True"
@@ -55,5 +54,4 @@
             </ListView.ItemTemplate>
         </ListView>
     </StackLayout>
-
 </ContentPage>

@@ -1,15 +1,10 @@
-﻿using Phonebook.Data;
-using Phonebook.Models;
-using SQLite;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System;
 using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
+using Phonebook.Models;
+using Phonebook.Services;
+using Phonebook.Services.Interfaces;
+using Phonebook.ViewModels;
 
 namespace Phonebook.Views
 {
@@ -17,57 +12,38 @@ namespace Phonebook.Views
     [DesignTimeVisible(false)]
     public partial class ContactsListPage : ContentPage
     {
-        private Database db;
-        private List<Contact> initialContacts;
-        public ObservableCollection<Contact> Contacts { get; set; }
+        public ContactsListViewModel ViewModel 
+        {
+            get { return BindingContext as ContactsListViewModel; } 
+            set { BindingContext = value; }
+        }
         public ContactsListPage()
         {
+            IPageService pageService = new PageService();
+            ViewModel = new ContactsListViewModel(pageService);
+
             InitializeComponent();
-            db = new Database();
         }
 
         protected async override void OnAppearing()
         {
+            await ViewModel.LoadData();
             base.OnAppearing();
-
-            await LoadContacts();
-            Contacts = new ObservableCollection<Contact>(initialContacts);
-            contactsList.ItemsSource = Contacts;
         }
 
         private void contactsList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             Contact selectedContact = e.SelectedItem as Contact;
-            Navigation.PushAsync(new ContactDetailsPage(selectedContact));
+
+            ViewModel.SelectCommand.Execute(selectedContact);
         }
 
-        private async void DeleteButtonClicked(object sender, EventArgs e)
+        private void DeleteButtonClicked(object sender, EventArgs e)
         {
             var menuItem = sender as MenuItem;
             var contact = menuItem.CommandParameter as Contact;
 
-            bool deletionApproved = await DisplayAlert(
-                "Alert",
-                $"Do you really want to delete the contact with name {contact.Name}?",
-                "Yes",
-                "No");
-
-            if (deletionApproved)
-            {
-                int deletedContacts = await db.DeleteItem(contact);
-                if (deletedContacts > 0)
-                {
-                    initialContacts.Remove(contact);
-                    Contacts.Remove(contact);
-                }
-                else
-                {
-                    await DisplayAlert(
-                        "Deletion failed!",
-                        $"The deletion of contact with name {contact.Name} failed.",
-                        "Close");
-                }
-            }
+            ViewModel.DeleteCommand.Execute(contact);
         }
 
         private void EditButtonClicked(object sender, EventArgs e)
@@ -75,34 +51,14 @@ namespace Phonebook.Views
             var menuItem = sender as MenuItem;
             var contact = menuItem.CommandParameter as Contact;
 
-            //TODO: Decide whether to make all calls to Navigation.PushAsync awaited.
-            Navigation.PushAsync(new ContactCreateEditPage(contact));
+            ViewModel.EditCommand.Execute(contact);
         }
 
-        private void AddItemClicked(object sender, EventArgs e)
-        {
-            Navigation.PushAsync(new ContactCreateEditPage(new Contact()));
-        }
         private void SearchBarTextChanged(object sender, TextChangedEventArgs e)
         {
             string value = e.NewTextValue;
-            Search(value);
-        }
 
-        private async Task LoadContacts()
-        {
-            initialContacts = await db.GetItems<Contact>();
-        }
-
-        private void Search(string value)
-        {
-            Contacts = new ObservableCollection<Contact>(
-                initialContacts.Where(
-                        c => c.Name.ToLower().StartsWith(value.ToLower())
-                    )
-                );
-
-            contactsList.ItemsSource = Contacts;
+            ViewModel.SearchCommand.Execute(value);
         }
     }
 }

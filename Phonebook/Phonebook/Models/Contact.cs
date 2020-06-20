@@ -15,6 +15,8 @@ namespace Phonebook.Models
         [MaxLength(100)]
         public string Description { get; set; }
 
+        public string PicturePath { get; set; }
+
         [Indexed]
         public int CategoryId { get; set; }
     }
