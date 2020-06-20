@@ -2,8 +2,6 @@
 using System.ComponentModel;
 using Xamarin.Forms;
 using Phonebook.Models;
-using Phonebook.Services;
-using Phonebook.Services.Interfaces;
 using Phonebook.ViewModels;
 
 namespace Phonebook.Views
@@ -19,10 +17,9 @@ namespace Phonebook.Views
         }
         public ContactsListPage()
         {
-            IPageService pageService = new PageService();
-            ViewModel = new ContactsListViewModel(pageService);
-
             InitializeComponent();
+
+            ViewModel = new ContactsListViewModel();
         }
 
         protected async override void OnAppearing()
@@ -33,7 +30,7 @@ namespace Phonebook.Views
 
         private void contactsList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            Contact selectedContact = e.SelectedItem as Contact;
+            var selectedContact = e.SelectedItem as ContactViewModel;
 
             ViewModel.SelectCommand.Execute(selectedContact);
         }
@@ -41,7 +38,7 @@ namespace Phonebook.Views
         private void DeleteButtonClicked(object sender, EventArgs e)
         {
             var menuItem = sender as MenuItem;
-            var contact = menuItem.CommandParameter as Contact;
+            var contact = menuItem.CommandParameter as ContactViewModel;
 
             ViewModel.DeleteCommand.Execute(contact);
         }
@@ -49,7 +46,7 @@ namespace Phonebook.Views
         private void EditButtonClicked(object sender, EventArgs e)
         {
             var menuItem = sender as MenuItem;
-            var contact = menuItem.CommandParameter as Contact;
+            var contact = menuItem.CommandParameter as ContactViewModel;
 
             ViewModel.EditCommand.Execute(contact);
         }

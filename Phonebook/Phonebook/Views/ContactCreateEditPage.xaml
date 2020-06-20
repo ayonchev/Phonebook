@@ -26,6 +26,6 @@
             Title="Choose a category" 
             ItemsSource="{Binding Categories}" 
             ItemDisplayBinding="{Binding Name}" 
-            SelectedItem="{Binding SelectedCategory, Mode=TwoWay}" />
+            SelectedItem="{Binding Contact.Category, Mode=TwoWay}" />
     </StackLayout>
 </ContentPage>

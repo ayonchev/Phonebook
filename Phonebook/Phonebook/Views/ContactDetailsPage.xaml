@@ -5,12 +5,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Phonebook.Views.ContactDetailsPage">
-    <StackLayout>
-        <Image />
-        <StackLayout Orientation="Horizontal"  Padding="30" VerticalOptions="CenterAndExpand">
-            <Label HorizontalOptions="Start" Text="{Binding Name}" FontSize="Large" />
-            <Label HorizontalOptions="End" Text="{Binding PhoneNumber}" />
+    <StackLayout Padding="20" HorizontalOptions="Center">
+        <Image Source="{Binding Picture}" HeightRequest="100" />
+        <StackLayout HorizontalOptions="Center">
+            <Label Text="{Binding Name}" FontSize="Title" />
+            <Label Text="{Binding PhoneNumber}" FontSize="Medium" />
+            <Label Text="{Binding Description}" FontSize="Medium" />
+            <Label Text="{Binding Category.Name}" FontSize="Medium" />
         </StackLayout>
-        <Label Text="{Binding Description}" />
     </StackLayout>
 </ContentPage>

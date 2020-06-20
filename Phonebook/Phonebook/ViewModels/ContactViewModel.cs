@@ -1,7 +1,4 @@
 ﻿using Phonebook.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xamarin.Forms;
 
 namespace Phonebook.ViewModels
@@ -9,17 +6,51 @@ namespace Phonebook.ViewModels
     public class ContactViewModel : BaseViewModel
     {
         public int Id { get; set; }
+        public string PicturePath { get; set; }
 
-        public string Name { get; set; }
 
-        public string PhoneNumber { get; set; }
+        private string name;
+        public string Name
+        {
+            get { return name; }
+            set { SetProperty(ref name, value); }
+        }
 
-        public string Description { get; set; }
+        private string phoneNumber;
+        public string PhoneNumber
+        {
+            get { return phoneNumber; }
+            set { SetProperty(ref phoneNumber, value); }
+        }
 
-        public ImageSource Picture { get; set; }
+        private string description;
+        public string Description 
+        { 
+            get { return description; }
+            set { SetProperty(ref description, value); }
+        }
 
-        public int CategoryId { get; set; }
+        private ImageSource picture;
+        public ImageSource Picture
+        {
+            get { return picture; }
+            set 
+            {
+                if (value.IsEmpty)
+                {
+                    value = ImageSource.FromResource(
+                        "Phonebook.Assets.Images.user-profile.png");
+                }
 
-        public Category SelectedCategory { get; set; }
+                SetProperty(ref picture, value); 
+            }
+        }
+
+        private Category category;
+        public Category Category
+        {
+            get { return category; }
+            set { SetProperty(ref category, value); }
+        }
     }
 }

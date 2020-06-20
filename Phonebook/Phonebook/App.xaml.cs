@@ -9,6 +9,8 @@ using Xamarin.Forms.Internals;
 using Phonebook.Data;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Phonebook.Services.Interfaces;
+using Phonebook.Services;
 
 namespace Phonebook
 {
@@ -17,6 +19,7 @@ namespace Phonebook
         public App()
         {
             InitializeComponent();
+            DependencyService.Register<IPageService, PageService>();
             MainPage = new NavigationPage(new ContactsListPage());
         }
 

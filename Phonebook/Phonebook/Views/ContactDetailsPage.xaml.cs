@@ -1,10 +1,4 @@
-﻿using Phonebook.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using Phonebook.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -13,8 +7,8 @@ namespace Phonebook.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ContactDetailsPage : ContentPage
     {
-        public Contact Contact { get; set; }
-        public ContactDetailsPage(Contact contact)
+        public ContactViewModel Contact { get; set; }
+        public ContactDetailsPage(ContactViewModel contact)
         {
             InitializeComponent();
 

@@ -47,10 +47,10 @@ namespace Phonebook.Data
             return items;
         }
 
-        public async Task<int> DeleteItem<T>(T item) 
+        public async Task<int> DeleteItem<T>(object primaryKey) 
             where T : BaseEntity, new()
         {
-            return await connection.DeleteAsync(item);
+            return await connection.DeleteAsync<T>(primaryKey);
         }
 
         public async Task SaveAsync<T>(T item) 

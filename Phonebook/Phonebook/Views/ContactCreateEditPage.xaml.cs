@@ -27,19 +27,10 @@ namespace Phonebook.Views
             get { return BindingContext as ContactCreateEditViewModel; }
             set { BindingContext = value; }
         }
-        public ContactCreateEditPage(Contact contact)
+        public ContactCreateEditPage(ContactViewModel contact, List<Category> categories)
         {
-            IPageService pageService = new PageService();
-            ViewModel = new ContactCreateEditViewModel(pageService, contact);
-
             InitializeComponent();
-        }
-
-        protected async override void OnAppearing()
-        {
-            await ViewModel.LoadData();
-
-            base.OnAppearing();
+            ViewModel = new ContactCreateEditViewModel(contact, categories);
         }
     }
 }

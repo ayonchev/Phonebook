@@ -1,74 +1,46 @@
-﻿using Phonebook.Data;
-using Phonebook.Models;
-using Phonebook.Services.Interfaces;
-using Plugin.Media;
-using Plugin.Media.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using Plugin.Media;
+using Plugin.Media.Abstractions;
+using Phonebook.Data;
+using Phonebook.Models;
 
 namespace Phonebook.ViewModels
 {
     public class ContactCreateEditViewModel : BaseViewModel
     {
         private Database db;
-        private IPageService pageService;
 
-        public Contact Contact { get; set; }
+        public ContactViewModel Contact { get; set; }
 
         private List<Category> categories;
         public List<Category> Categories
         {
-            get
-            {
-                return categories;
-            }
-            set
-            {
-                SetProperty(ref categories, value);
-            }
-        }
-
-        private Category selectedCategory;
-        public Category SelectedCategory
-        {
-            get
-            {
-                return selectedCategory;
-            }
-            set
-            {
-                SetProperty(ref selectedCategory, value);
-                Contact.CategoryId = selectedCategory.Id;
-            }
+            get { return categories; }
+            set { SetProperty(ref categories, value); }
         }
 
         public ICommand SelectPictureCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
-        public ContactCreateEditViewModel(IPageService pageService, Contact contact)
+        public ContactCreateEditViewModel(ContactViewModel contact, List<Category> categories)
         {
             db = new Database();
+            Categories = categories;
             Contact = contact;
-            this.pageService = pageService;
 
             SelectPictureCommand = new Command(async () => await SelectPicture());
             SaveCommand = new Command(async () => await Save());
             CancelCommand = new Command(async () => await Cancel());
         }
 
+        //Currently the method is not used because if the categories are loaded later than the contact, the contact, no item is selected initially in the category picker.
         public async Task LoadData()
         {
             Categories = await db.GetItems<Category>();
-            SelectedCategory =
-                Categories.FirstOrDefault(c => c.Id == Contact.CategoryId) ??
-                new Category();
         }
 
         private async Task SelectPicture()
@@ -77,7 +49,7 @@ namespace Phonebook.ViewModels
 
             if (!CrossMedia.Current.IsPickPhotoSupported)
             {
-                await pageService.DisplayAlert("Error", "Photo picking is not supported!", "Ok");
+                await PageService.DisplayAlert("Error", "Photo picking is not supported!", "Ok");
                 return;
             }
 
@@ -85,22 +57,33 @@ namespace Phonebook.ViewModels
 
             if (picture == null)
             {
-                await pageService.DisplayAlert("Error", "No image is selected!", "Ok");
+                await PageService.DisplayAlert("Error", "No image is selected!", "Ok");
                 return;
             }
 
-            //selectedImage.Source = ImageSource.FromFile(picture.Path);
+            Contact.PicturePath = picture.Path;
+            Contact.Picture = ImageSource.FromFile(Contact.PicturePath);
         }
 
         private async Task Save()
         {
-            await db.SaveAsync(Contact);
-            await pageService.PopAsync();
+            Contact contact = new Contact
+            {
+                Id = Contact.Id,
+                Name = Contact.Name,
+                Description = Contact.Description,
+                CategoryId = Contact.Category.Id,
+                PhoneNumber = Contact.PhoneNumber,
+                PicturePath = Contact.PicturePath
+            };
+
+            await db.SaveAsync(contact);
+            await PageService.PopAsync();
         }
 
         private async Task Cancel()
         {
-            await pageService.PopAsync();
+            await PageService.PopAsync();
         }
     }
 }

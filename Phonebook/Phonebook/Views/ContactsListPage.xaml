@@ -29,7 +29,7 @@
                             Orientation="Horizontal"
                             VerticalOptions="Center">
                             <Image 
-                                Source="{local:ImageResource Phonebook.Assets.Images.user-profile.png}"
+                                Source="{Binding Picture}"
                                 WidthRequest="50"
                                 Aspect="AspectFit" />
                             <Label 

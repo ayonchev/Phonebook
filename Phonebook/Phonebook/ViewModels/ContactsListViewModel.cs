@@ -1,26 +1,23 @@
-﻿using Phonebook.Data;
-using Phonebook.Models;
-using Phonebook.Services.Interfaces;
-using Phonebook.Views;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using Phonebook.Data;
+using Phonebook.Models;
+using Phonebook.Views;
 
 namespace Phonebook.ViewModels
 {
     public class ContactsListViewModel : BaseViewModel
     {
         private Database db;
-        private IPageService pageService;
 
-        private List<Contact> initialContacts;
-        private ObservableCollection<Contact> contacts;
-        public ObservableCollection<Contact> Contacts 
+        private List<Category> categories;
+        private List<ContactViewModel> initialContacts;
+        private ObservableCollection<ContactViewModel> contacts;
+        public ObservableCollection<ContactViewModel> Contacts 
         {
             get
             {
@@ -37,52 +34,64 @@ namespace Phonebook.ViewModels
         public ICommand AddCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
-        public ContactsListViewModel(IPageService pageService)
+
+        public ContactsListViewModel()
         {
             this.db = new Database();
-            this.pageService = pageService;
-
+            
             SearchCommand = new Command<string>(Search);
-            SelectCommand = new Command<Contact>(async c => await Select(c));
+            SelectCommand = new Command<ContactViewModel>(async c => await Select(c));
             AddCommand = new Command(async () => await Add());
-            EditCommand = new Command<Contact>(async c => await Edit(c));
-            DeleteCommand = new Command<Contact>(async c => await Delete(c));
+            EditCommand = new Command<ContactViewModel>(async c => await Edit(c));
+            DeleteCommand = new Command<ContactViewModel>(async c => await Delete(c));
         }
 
         public async Task LoadData()
         {
-            initialContacts = await db.GetItems<Contact>();
-            Contacts = new ObservableCollection<Contact>(initialContacts);
+            var contacts = await db.GetItems<Contact>();
+            categories = await db.GetItems<Category>();
+
+            initialContacts = contacts.Select(c => new ContactViewModel
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Description = c.Description,
+                PhoneNumber = c.PhoneNumber,
+                Picture = ImageSource.FromFile(c.PicturePath),
+                Category = categories.FirstOrDefault(ct => ct.Id == c.CategoryId)
+            }).ToList();
+
+            Contacts = new ObservableCollection<ContactViewModel>(initialContacts);
         }
 
         private void Search(string value)
         {
-            Contacts = new ObservableCollection<Contact>(
+            Contacts = new ObservableCollection<ContactViewModel>(
                 initialContacts.Where(
                         c => c.Name.ToLower().StartsWith(value.ToLower())
                     )
                 );
         }
 
-        private async Task Select(Contact contact)
+        private async Task Select(ContactViewModel contact)
         {
-            await pageService.PushAsync(new ContactDetailsPage(contact));
+            await PageService.PushAsync(new ContactDetailsPage(contact));
         }
 
         private async Task Add()
         {
-            int i = 1;
-            await pageService.PushAsync(new ContactCreateEditPage(new Contact()));
+            await PageService.PushAsync(new ContactCreateEditPage(new ContactViewModel(), categories));
         }
 
-        private async Task Edit(Contact contact)
+        private async Task Edit(ContactViewModel contact)
         {
-            await pageService.PushAsync(new ContactCreateEditPage(contact));
+
+            await PageService.PushAsync(new ContactCreateEditPage(contact, categories));
         }
 
-        private async Task Delete(Contact contact)
+        private async Task Delete(ContactViewModel contact)
         {
-            bool deletionApproved = await pageService.DisplayAlert(
+            bool deletionApproved = await PageService.DisplayAlert(
                 "Alert",
                 $"Do you really want to delete the contact with name {contact.Name}?",
                 "Yes",
@@ -90,7 +99,7 @@ namespace Phonebook.ViewModels
 
             if (deletionApproved)
             {
-                int deletedContacts = await db.DeleteItem(contact);
+                int deletedContacts = await db.DeleteItem<Contact>(contact.Id);
                 if (deletedContacts > 0)
                 {
                     initialContacts.Remove(contact);
@@ -98,7 +107,7 @@ namespace Phonebook.ViewModels
                 }
                 else
                 {
-                    await pageService.DisplayAlert(
+                    await PageService.DisplayAlert(
                         "Deletion failed!",
                         $"The deletion of contact with name {contact.Name} failed.",
                         "Close");
