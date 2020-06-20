@@ -1,5 +1,7 @@
 ﻿using Phonebook.Data;
 using Phonebook.Models;
+using Plugin.Media;
+using Plugin.Media.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -38,6 +40,9 @@ namespace Phonebook.Views
             }
             set
             {
+                if (value == null)
+                    return;
+
                 selectedCategory = value;
                 Contact.CategoryId = selectedCategory.Id;
                 OnPropertyChanged();
@@ -75,8 +80,8 @@ namespace Phonebook.Views
         protected async override void OnAppearing()
         {
             ViewModel.Categories = await db.GetItems<Category>();
-            ViewModel.SelectedCategory = 
-                ViewModel.Categories.FirstOrDefault(c => c.Id == ViewModel.Contact.CategoryId) ?? 
+            ViewModel.SelectedCategory =
+                ViewModel.Categories.FirstOrDefault(c => c.Id == ViewModel.Contact.CategoryId) ??
                 new Category();
 
             base.OnAppearing();
@@ -91,6 +96,27 @@ namespace Phonebook.Views
         {
             await db.SaveAsync(ViewModel.Contact);
             await Navigation.PopAsync();
+        }
+
+        private async void PictureBtn_Clicked(object sender, EventArgs e)
+        {
+            await CrossMedia.Current.Initialize();
+
+            if (!CrossMedia.Current.IsPickPhotoSupported)
+            {
+                await DisplayAlert("Error", "Photo picking is not supported!", "Ok");
+                return;
+            }
+
+            MediaFile picture = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions() { PhotoSize = PhotoSize.Medium });
+
+            if (picture == null)
+            {
+                await DisplayAlert("Error", "No image is selected!", "Ok");
+                return;
+            }
+
+            selectedImage.Source = ImageSource.FromFile(picture.Path);
         }
     }
 }

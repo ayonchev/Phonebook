@@ -13,6 +13,8 @@
     </ContentPage.ToolbarItems>
     
     <StackLayout VerticalOptions="CenterAndExpand">
+        <Button Text="Choose a picture" Clicked="PictureBtn_Clicked" />
+        <Image x:Name="selectedImage" />
         <Label Text="Name" />
         <Entry Text="{Binding Contact.Name, Mode=TwoWay}" />
         <Label Text="Phone number" />
@@ -20,6 +22,10 @@
         <Label Text="Description" />
         <Editor Text="{Binding Contact.Description, Mode=TwoWay}" AutoSize="TextChanges" />
         <Label Text="Category" />
-        <Picker Title="Choose a category" ItemsSource="{Binding Categories}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedCategory, Mode=TwoWay}" />
+        <Picker 
+            Title="Choose a category" 
+            ItemsSource="{Binding Categories}" 
+            ItemDisplayBinding="{Binding Name}" 
+            SelectedItem="{Binding SelectedCategory, Mode=TwoWay}" />
     </StackLayout>
 </ContentPage>
