@@ -42,7 +42,7 @@
             <Label Text="Name" />
             <Entry Text="{Binding Contact.Name, Mode=TwoWay}" />
             <Label Text="Phone number" />
-            <Entry Text="{Binding Contact.PhoneNumber, Mode=TwoWay}" />
+            <Entry Text="{Binding Contact.PhoneNumber, Mode=TwoWay}" Keyboard="Telephone" />
             <Label Text="Description" />
             <Editor Text="{Binding Contact.Description, Mode=TwoWay}" AutoSize="TextChanges" />
             <Label Text="Category" />

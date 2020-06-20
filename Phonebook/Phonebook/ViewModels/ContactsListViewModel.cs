@@ -57,6 +57,7 @@ namespace Phonebook.ViewModels
                 Name = c.Name,
                 Description = c.Description,
                 PhoneNumber = c.PhoneNumber,
+                PicturePath = c.PicturePath,
                 Picture = ImageSource.FromFile(c.PicturePath),
                 Category = categories.FirstOrDefault(ct => ct.Id == c.CategoryId)
             }).ToList();
