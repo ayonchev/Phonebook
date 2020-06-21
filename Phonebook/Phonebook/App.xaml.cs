@@ -6,7 +6,6 @@ using Xamarin.Forms.Xaml;
 using System.IO;
 using Phonebook.Models;
 using Xamarin.Forms.Internals;
-using Phonebook.Data;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Phonebook.Services.Interfaces;
@@ -16,16 +15,19 @@ namespace Phonebook
 {
     public partial class App : Application
     {
+        private Database db;
         public App()
         {
             InitializeComponent();
+            db = new Database();
+            DependencyService.RegisterSingleton(db);
             DependencyService.Register<IPageService, PageService>();
             MainPage = new NavigationPage(new ContactsListPage());
         }
 
         private async Task InitializeDatabase()
         {
-            await Database.Initialize(new Type[] { typeof(Contact), typeof(Category) });
+            await db.Initialize(new Type[] { typeof(Contact), typeof(Category) });
 
             var categoryList = new List<Category>
             {
@@ -35,7 +37,7 @@ namespace Phonebook
                 new Category() { Name= "Other"}
             };
 
-            await Database.Seed(categoryList, categoryList.Count);
+            await db.Seed(categoryList, categoryList.Count);
         }
 
         protected async override void OnStart()

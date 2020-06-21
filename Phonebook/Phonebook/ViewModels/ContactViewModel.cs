@@ -52,5 +52,9 @@ namespace Phonebook.ViewModels
             get { return category; }
             set { SetProperty(ref category, value); }
         }
+
+        public int NameMaxLength => 50;
+        public int PhoneNumberMaxLength => 20;
+        public int DescriptionMaxLength => 100;
     }
 }

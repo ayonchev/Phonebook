@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
-using Phonebook.Data;
 using Phonebook.Models;
 using Phonebook.Views;
 
@@ -12,8 +11,6 @@ namespace Phonebook.ViewModels
 {
     public class ContactsListViewModel : BaseViewModel
     {
-        private Database db;
-
         private List<Category> categories;
         private List<ContactViewModel> initialContacts;
         private ObservableCollection<ContactViewModel> contacts;
@@ -37,8 +34,6 @@ namespace Phonebook.ViewModels
 
         public ContactsListViewModel()
         {
-            this.db = new Database();
-            
             SearchCommand = new Command<string>(Search);
             SelectCommand = new Command<ContactViewModel>(async c => await Select(c));
             AddCommand = new Command(async () => await Add());
@@ -48,8 +43,8 @@ namespace Phonebook.ViewModels
 
         public async Task LoadData()
         {
-            var contacts = await db.GetItems<Contact>();
-            categories = await db.GetItems<Category>();
+            var contacts = await Database.GetItems<Contact>();
+            categories = await Database.GetItems<Category>();
 
             initialContacts = contacts.Select(c => new ContactViewModel
             {
@@ -100,7 +95,7 @@ namespace Phonebook.ViewModels
 
             if (deletionApproved)
             {
-                int deletedContacts = await db.DeleteItem<Contact>(contact.Id);
+                int deletedContacts = await Database.DeleteItem<Contact>(contact.Id);
                 if (deletedContacts > 0)
                 {
                     initialContacts.Remove(contact);
