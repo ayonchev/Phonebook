@@ -4,15 +4,13 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
-using Phonebook.Data;
 using Phonebook.Models;
+using Phonebook.Services;
 
 namespace Phonebook.ViewModels
 {
     public class ContactCreateEditViewModel : BaseViewModel
     {
-        private Database db;
-
         public ContactViewModel Contact { get; set; }
 
         private List<Category> categories;
@@ -28,7 +26,6 @@ namespace Phonebook.ViewModels
 
         public ContactCreateEditViewModel(ContactViewModel contact, List<Category> categories)
         {
-            db = new Database();
             Categories = categories;
             Contact = contact;
 
@@ -40,7 +37,7 @@ namespace Phonebook.ViewModels
         //Currently the method is not used because if the categories are loaded later than the contact, the contact, no item is selected initially in the category picker.
         public async Task LoadData()
         {
-            Categories = await db.GetItems<Category>();
+            Categories = await Database.GetItems<Category>();
         }
 
         private async Task SelectPicture()
@@ -77,7 +74,7 @@ namespace Phonebook.ViewModels
                 PicturePath = Contact.PicturePath
             };
 
-            await db.SaveAsync(contact);
+            await Database.SaveAsync(contact);
             await PageService.PopAsync();
         }
 

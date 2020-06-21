@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Phonebook.Data
+namespace Phonebook.Services
 {
-    public static class Constants
+    public static class DataConstants
     {
         private const string DatabaseFilename = "phonebook.db3";
         public static string DatabasePath

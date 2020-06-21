@@ -1,16 +1,17 @@
-﻿using Phonebook.Services.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
 using Xamarin.Forms;
+using Phonebook.Services;
+using Phonebook.Services.Interfaces;
 
 namespace Phonebook.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
         public IPageService PageService => DependencyService.Get<IPageService>();
+        public Database Database => DependencyService.Get<Database>();
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")

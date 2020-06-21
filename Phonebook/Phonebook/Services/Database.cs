@@ -1,11 +1,10 @@
 ﻿using System;
 using SQLite;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Phonebook.Models;
 
-namespace Phonebook.Data
+namespace Phonebook.Services
 {
     public class Database
     {
@@ -14,11 +13,11 @@ namespace Phonebook.Data
 
         public SQLiteAsyncConnection Connection => connection;
 
-        public async static Task Initialize(Type[] types)
+        public async Task Initialize(Type[] types)
         {
             if (!initialized)
             {
-                connection = new SQLiteAsyncConnection(Constants.DatabasePath);
+                connection = new SQLiteAsyncConnection(DataConstants.DatabasePath);
 
                 foreach (var type in types)
                 {
@@ -29,7 +28,7 @@ namespace Phonebook.Data
             }
         }
 
-        public static async Task Seed<T>(IEnumerable<T> items, int minimumCount) 
+        public async Task Seed<T>(IEnumerable<T> items, int minimumCount) 
             where T : BaseEntity, new()
         {
             int currentCount = await connection.Table<T>().CountAsync();

@@ -10,6 +10,7 @@ namespace Phonebook.Models
         [MaxLength(50)]
         public string Name { get; set; }
         
+        [MaxLength(20)]
         public string PhoneNumber { get; set; }
 
         [MaxLength(100)]
