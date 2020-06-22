@@ -22,13 +22,12 @@ namespace Phonebook
             db = new Database();
             DependencyService.RegisterSingleton(db);
             DependencyService.Register<IPageService, PageService>();
+
             MainPage = new NavigationPage(new ContactsListPage());
         }
 
-        private async Task InitializeDatabase()
+        private void InitializeDatabase()
         {
-            await db.Initialize(new Type[] { typeof(Contact), typeof(Category) });
-
             var categoryList = new List<Category>
             {
                 new Category() { Name= "Friends"},
@@ -37,12 +36,13 @@ namespace Phonebook
                 new Category() { Name= "Other"}
             };
 
-            await db.Seed(categoryList, categoryList.Count);
+            db.Initialize(new Type[] { typeof(Category), typeof(Contact) });
+            db.Seed(categoryList, categoryList.Count);
         }
 
-        protected async override void OnStart()
+        protected override void OnStart()
         {
-            await InitializeDatabase();
+            InitializeDatabase();
         }
 
         protected override void OnSleep()

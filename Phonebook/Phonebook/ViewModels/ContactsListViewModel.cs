@@ -43,8 +43,8 @@ namespace Phonebook.ViewModels
 
         public async Task LoadData()
         {
-            var contacts = await Database.GetItems<Contact>();
             categories = await Database.GetItems<Category>();
+            var contacts = await Database.GetItems<Contact>();
 
             initialContacts = contacts.Select(c => new ContactViewModel
             {
